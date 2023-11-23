@@ -208,7 +208,8 @@ def collection_list_common(
     prefetch: Prefetch,
 ) -> CollectionListResponse:
     result, new_stoken_obj, done = filter_by_stoken_and_limit(
-        stoken, limit, queryset, models.Collection.stoken_annotation
+        stoken, limit, queryset.filter(revisions__current=True), 
+        models.Collection.stoken_annotation
     )
     new_stoken = new_stoken_obj and new_stoken_obj.uid
     context = Context(user, prefetch)
@@ -429,7 +430,8 @@ def item_list_common(
     reverse: bool = False,
 ) -> CollectionItemListResponse:
     result, new_stoken_obj, done = filter_by_stoken_and_limit(
-        stoken, limit, queryset, models.CollectionItem.stoken_annotation, reverse
+        stoken, limit, queryset.filter(revisions__current=True), 
+        models.CollectionItem.stoken_annotation, reverse
     )
     new_stoken = new_stoken_obj and new_stoken_obj.uid
     context = Context(user, prefetch)
